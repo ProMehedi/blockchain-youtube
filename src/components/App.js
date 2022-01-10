@@ -15,7 +15,9 @@ const ipfs = ipfsClient({
 
 const App = () => {
   const [loading, setLoading] = React.useState(false)
-  const [account, setAccount] = React.useState('0x0')
+  const [account, setAccount] = React.useState(
+    '0x0000000000000000000000000000000000000000'
+  )
 
   React.useEffect(() => {
     loadWeb3()

@@ -1,8 +1,7 @@
+/* eslint-disable no-undef */
 const DVideo = artifacts.require('./DVideo.sol')
 
-require('chai')
-  .use(require('chai-as-promised'))
-  .should()
+require('chai').use(require('chai-as-promised')).should()
 
 contract('DVideo', ([deployer, author]) => {
   let dvideo
@@ -46,10 +45,12 @@ contract('DVideo', ([deployer, author]) => {
       assert.equal(event.author, author, 'author is correct')
 
       // FAILURE: Video must have hash
-      await dvideo.uploadVideo('', 'Video title', { from: author }).should.be.rejected;
+      await dvideo.uploadVideo('', 'Video title', { from: author }).should.be
+        .rejected
 
       // FAILURE: Video must have title
-      await dvideo.uploadVideo('Video hash', '', { from: author }).should.be.rejected;
+      await dvideo.uploadVideo('Video hash', '', { from: author }).should.be
+        .rejected
     })
 
     //check from Struct

@@ -15,8 +15,9 @@ contract DVideo {
 
 
   //Create Event
+  event VideoUploaded(uint id, string hash, string title, address author);
 
-
+  //Constructor
   constructor() {
   }
 
@@ -35,6 +36,6 @@ contract DVideo {
     videos[videoCount] = Video(videoCount, _videoHash, _title, msg.sender);
 
     // Trigger an event
-
+    emit VideoUploaded(videoCount, _videoHash, _title, msg.sender);
   }
 }

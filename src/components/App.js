@@ -15,6 +15,7 @@ const ipfs = ipfsClient({
 
 const App = () => {
   const [loading, setLoading] = React.useState(false)
+  const [account, setAccount] = React.useState('0x0')
 
   React.useEffect(() => {
     loadWeb3()
@@ -37,7 +38,8 @@ const App = () => {
   const loadBlockchainData = async () => {
     const web3 = window.web3
     //Load accounts
-    //Add first account the the state
+    const accounts = await web3.eth.getAccounts()
+    setAccount(accounts[0])
 
     //Get network ID
     //Get network data
@@ -65,11 +67,11 @@ const App = () => {
   //Change Video
   const changeVideo = (hash, title) => {}
 
+  console.log(account)
+
   return (
     <div>
-      <Navbar
-      //Account
-      />
+      <Navbar account={account} />
       {loading ? (
         <div id='loader' className='text-center mt-5'>
           <p>Loading...</p>

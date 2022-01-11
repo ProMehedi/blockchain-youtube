@@ -126,6 +126,7 @@ const App = () => {
           uploadVideo={uploadVideo}
           currentTitle={currentTitle}
           hash={currentHash}
+          videos={videoList}
         />
       )}
     </div>

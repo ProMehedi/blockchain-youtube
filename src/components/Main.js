@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 
-const Main = ({ uploadVideo, currentTitle, hash }) => {
+const Main = ({ uploadVideo, videos, currentTitle, hash }) => {
   const [title, setTitle] = React.useState('')
   const [buffer, setBuffer] = React.useState([])
 
@@ -61,8 +61,21 @@ const Main = ({ uploadVideo, currentTitle, hash }) => {
               Upload!
             </Button>
           </Form>
-          {/* Map Video...*/}
-          {/* Return Video...*/}
+          {videos &&
+            videos.map((video) => (
+              <Card key={video.hash} bg='dark' text='light' className='mt-3'>
+                <Card.Body className='p-1'>
+                  <small>{video.title}</small>
+                  <div className='embed-responsive embed-responsive-16by9'>
+                    <video
+                      className='embed-responsive-item'
+                      src={`https://ipfs.infura.io/ipfs/${video.hash}`}
+                      controls
+                    />
+                  </div>
+                </Card.Body>
+              </Card>
+            ))}
           <div style={{ width: '175px' }}>
             <div className='card-title bg-dark'>
               <small className='text-white'>

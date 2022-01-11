@@ -1,13 +1,11 @@
 import React from 'react'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 const Main = () => {
   return (
-    <div className='container-fluid text-monospace'>
-      <br></br>
-      &nbsp;
-      <br></br>
-      <div className='row'>
-        <div className='col-md-10'>
+    <Container fluid>
+      <Row className='mt-5'>
+        <Col md={10}>
           <div
             className='embed-responsive embed-responsive-16by9'
             style={{ maxHeight: '768px' }}
@@ -15,27 +13,22 @@ const Main = () => {
             {/* Video... */}
           </div>
           <h3>{/* Code... */}</h3>
-        </div>
-        <div
-          className='col-md-2 overflow-auto text-center'
-          style={{ maxHeight: '768px', minWidth: '175px' }}
-        >
-          <h5>
-            <b>{/* Share Video */}</b>
-          </h5>
-          <form
-            onSubmit={(event) => {
-              {
-                /* Upload Video...*/
-              }
-            }}
-          >
-            &nbsp;
-            {/* Get Video...*/}
-            <div className='form-group mr-sm-2'>{/* Input...*/}</div>
-            {/* Button...*/}
-            &nbsp;
-          </form>
+        </Col>
+        <Col md={2}>
+          <h4>Share Video</h4>
+          <Form>
+            <Form.Group controlId='file' className='mb-3'>
+              <Form.Label>Upload your video</Form.Label>
+              <Form.Control type='file' accept='.mp4, .mkv .ogg .wmv' />
+            </Form.Group>
+            <Form.Group controlId='title' className='mb-3'>
+              <Form.Label>Set your video title</Form.Label>
+              <Form.Control type='text' placeholder='Video Title' />
+            </Form.Group>
+            <Button type='submit' variant='danger btn-block'>
+              Upload!
+            </Button>
+          </Form>
           {/* Map Video...*/}
           {/* Return Video...*/}
           <div style={{ width: '175px' }}>
@@ -49,9 +42,9 @@ const Main = () => {
               {/* Return Side Videos...*/}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

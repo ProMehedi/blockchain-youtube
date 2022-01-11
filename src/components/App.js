@@ -18,10 +18,19 @@ const App = () => {
   const [account, setAccount] = React.useState(
     '0x0000000000000000000000000000000000000000'
   )
+  const [contract, setContract] = React.useState(null)
+  const [videoCount, setVideoCount] = React.useState(1)
+  const [videoList, setVideoList] = React.useState([])
+  const [currentTitle, setCurrentTitle] = React.useState(0)
+  const [currentHash, setCurrentHash] = React.useState('')
 
   React.useEffect(() => {
     loadWeb3()
+  }, [])
+
+  React.useEffect(() => {
     loadBlockchainData()
+    // eslint-disable-next-line
   }, [])
 
   const loadWeb3 = async () => {
@@ -38,26 +47,44 @@ const App = () => {
   }
 
   const loadBlockchainData = async () => {
+    setLoading(true)
+
     const web3 = window.web3
     //Load accounts
     const accounts = await web3.eth.getAccounts()
     setAccount(accounts[0])
 
     //Get network ID
+    const networkId = await web3.eth.net.getId()
     //Get network data
+    const networkData = DVideo.networks[networkId]
     //Check if net data exists, then
-    //Assign dvideo contract to a variable
-    //Add dvideo to the state
+    if (networkData) {
+      // Contract
+      const _contract = new web3.eth.Contract(DVideo.abi, networkData.address)
+      setContract(_contract)
 
-    //Check videoAmounts
-    //Add videAmounts to the state
+      if (contract) {
+        //videoCount
+        const _videoCount = await contract.methods.videoCount().call()
+        setVideoCount(_videoCount)
 
-    //Iterate throught videos and add them to the state (by newest)
+        //videoList
+        for (let i = 1; i <= videoCount; i++) {
+          const _video = await contract.methods.videos(i).call()
+          setVideoList((videoList) => [...videoList, _video])
+        }
 
-    //Set latest video and it's title to view as default
-    //Set loading state to false
+        // Set Latest video with title
+        const _latest = await contract.methods.videos(videoCount).call()
+        setCurrentTitle(_latest.title)
+        setCurrentHash(_latest.hash)
+      }
 
-    //If network data doesn't exisits, log error
+      setLoading(false)
+    } else {
+      window.alert('Smart contract not deployed to detected network.')
+    }
   }
 
   //Get video
@@ -69,7 +96,8 @@ const App = () => {
   //Change Video
   const changeVideo = (hash, title) => {}
 
-  console.log(account)
+  // console.log(contract && contract.methods.videos(1).call())
+  console.log(videoList)
 
   return (
     <div>

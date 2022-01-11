@@ -71,7 +71,8 @@ const App = () => {
         setVideoCount(_videoCount)
 
         //videoList
-        for (let i = 1; i <= videoCount; i++) {
+        setVideoList([])
+        for (let i = _videoCount; i >= 1; i--) {
           const _video = await _contract.methods.videos(i).call()
           setVideoList((videoList) => [...videoList, _video])
         }
@@ -115,7 +116,10 @@ const App = () => {
   }
 
   //Change Video
-  const changeVideo = (hash, title) => {}
+  const changeVideo = (title, hash) => {
+    setCurrentTitle(title)
+    setCurrentHash(hash)
+  }
 
   console.log(videoList)
 
@@ -136,6 +140,7 @@ const App = () => {
           hash={currentHash}
           videos={videoList}
           loading={uploading}
+          changeVideo={changeVideo}
         />
       )}
     </div>

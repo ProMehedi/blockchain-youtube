@@ -2,7 +2,14 @@ import React from 'react'
 import { ScaleLoader } from 'react-spinners'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 
-const Main = ({ uploadVideo, videos, currentTitle, hash, loading }) => {
+const Main = ({
+  uploadVideo,
+  videos,
+  currentTitle,
+  hash,
+  loading,
+  changeVideo,
+}) => {
   const [title, setTitle] = React.useState('')
   const [buffer, setBuffer] = React.useState([])
 
@@ -71,7 +78,13 @@ const Main = ({ uploadVideo, videos, currentTitle, hash, loading }) => {
           </Form>
           {videos &&
             videos.map((video) => (
-              <Card key={video.hash} bg='dark' text='light' className='mt-3'>
+              <Card
+                key={video.hash}
+                bg='dark'
+                text='light'
+                className='mt-3'
+                onClick={() => changeVideo(video.title, video.hash)}
+              >
                 <Card.Body className='p-1'>
                   <small>{video.title}</small>
                   <div className='embed-responsive embed-responsive-16by9'>

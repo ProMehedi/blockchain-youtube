@@ -1,7 +1,8 @@
 import React from 'react'
+import { ScaleLoader } from 'react-spinners'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 
-const Main = ({ uploadVideo, videos, currentTitle, hash }) => {
+const Main = ({ uploadVideo, videos, currentTitle, hash, loading }) => {
   const [title, setTitle] = React.useState('')
   const [buffer, setBuffer] = React.useState([])
 
@@ -57,8 +58,15 @@ const Main = ({ uploadVideo, videos, currentTitle, hash }) => {
                 onChange={({ target }) => setTitle(target.value)}
               />
             </Form.Group>
-            <Button type='submit' variant='danger btn-block'>
-              Upload!
+            <Button type='submit' variant='danger btn-block' disabled={loading}>
+              {loading ? (
+                <>
+                  <span className='mr-2'>Uploading...</span>
+                  <ScaleLoader color='#fff' height={15} width={3} />
+                </>
+              ) : (
+                'Upload!'
+              )}
             </Button>
           </Form>
           {videos &&

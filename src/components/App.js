@@ -79,10 +79,10 @@ const App = () => {
         const _latest = await _contract.methods.videos(videoCount).call()
         setCurrentTitle(_latest.title)
         setCurrentHash(_latest.hash)
+        setLoading(false)
       }
-
-      setLoading(false)
     } else {
+      setLoading(false)
       window.alert('Smart contract not deployed to detected network.')
     }
   }
@@ -90,23 +90,27 @@ const App = () => {
   //Upload video
   const uploadVideo = (title, buffer) => {
     setUploading(true)
-    ipfs.add(buffer, (err, ipfsHash) => {
-      console.log(ipfsHash)
-      if (err) {
-        console.error(err)
-        return
-      }
-      // setCurrentTitle(title)
-      // setCurrentHash(ipfsHash[0].hash)
-      contract.methods
-        .uploadVideo(ipfsHash[0].hash, title)
-        .send({ from: account })
-        .on('receipt', (receipt) => {
-          console.log(receipt)
-          loadBlockchainData()
+    try {
+      ipfs.add(buffer, (err, ipfsHash) => {
+        console.log(ipfsHash)
+        if (err) {
           setUploading(false)
-        })
-    })
+          console.error(err)
+          return
+        }
+        contract.methods
+          .uploadVideo(ipfsHash[0].hash, title)
+          .send({ from: account })
+          .on('receipt', (receipt) => {
+            console.log(receipt)
+            loadBlockchainData()
+            setUploading(false)
+          })
+      })
+    } catch (err) {
+      setUploading(false)
+      console.error(err)
+    }
   }
 
   //Change Video
@@ -127,6 +131,7 @@ const App = () => {
           currentTitle={currentTitle}
           hash={currentHash}
           videos={videoList}
+          loading={uploading}
         />
       )}
     </div>

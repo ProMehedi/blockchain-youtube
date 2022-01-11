@@ -87,11 +87,10 @@ const App = () => {
     }
   }
 
-  //Get video
-  const captureFile = (event) => {}
-
   //Upload video
-  const uploadVideo = (title) => {}
+  const uploadVideo = (title, buffer) => {
+    console.log({ title, buffer })
+  }
 
   //Change Video
   const changeVideo = (hash, title) => {}
@@ -107,9 +106,7 @@ const App = () => {
           <p>Loading...</p>
         </div>
       ) : (
-        <Main
-        //states&functions
-        />
+        <Main uploadVideo={uploadVideo} />
       )}
     </div>
   )

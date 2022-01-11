@@ -1,7 +1,22 @@
 import React from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
-const Main = () => {
+const Main = ({ uploadVideo }) => {
+  const [title, setTitle] = React.useState('')
+  const [buffer, setBuffer] = React.useState([])
+
+  //Get video
+  const captureFile = (event) => {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = async () => {
+      const _buffer = Buffer.from(reader.result)
+      setBuffer(_buffer)
+    }
+  }
+
   return (
     <Container fluid>
       <Row className='mt-5'>
@@ -16,14 +31,27 @@ const Main = () => {
         </Col>
         <Col md={2}>
           <h4>Share Video</h4>
-          <Form>
+          <Form
+            onSubmit={(event) => {
+              event.preventDefault()
+              uploadVideo(title, buffer)
+            }}
+          >
             <Form.Group controlId='file' className='mb-3'>
               <Form.Label>Upload your video</Form.Label>
-              <Form.Control type='file' accept='.mp4, .mkv .ogg .wmv' />
+              <Form.Control
+                type='file'
+                accept='.mp4, .mkv .ogg .wmv'
+                onChange={captureFile}
+              />
             </Form.Group>
             <Form.Group controlId='title' className='mb-3'>
               <Form.Label>Set your video title</Form.Label>
-              <Form.Control type='text' placeholder='Video Title' />
+              <Form.Control
+                type='text'
+                placeholder='Video Title'
+                onChange={({ target }) => setTitle(target.value)}
+              />
             </Form.Group>
             <Button type='submit' variant='danger btn-block'>
               Upload!

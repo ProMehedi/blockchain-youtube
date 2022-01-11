@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
-const Main = ({ uploadVideo }) => {
+const Main = ({ uploadVideo, currentTitle, hash }) => {
   const [title, setTitle] = React.useState('')
   const [buffer, setBuffer] = React.useState([])
 
@@ -25,9 +25,13 @@ const Main = ({ uploadVideo }) => {
             className='embed-responsive embed-responsive-16by9'
             style={{ maxHeight: '768px' }}
           >
-            {/* Video... */}
+            <video
+              className='embed-responsive-item'
+              src={`https://ipfs.infura.io/ipfs/${hash}`}
+              controls
+            />
           </div>
-          <h3>{/* Code... */}</h3>
+          <h3 className='mt-3'>{currentTitle}</h3>
         </Col>
         <Col md={2}>
           <h4>Share Video</h4>

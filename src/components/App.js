@@ -64,20 +64,19 @@ const App = () => {
       // Contract
       const _contract = new web3.eth.Contract(DVideo.abi, networkData.address)
       setContract(_contract)
-
-      if (contract) {
+      if (_contract) {
         //videoCount
-        const _videoCount = await contract.methods.videoCount().call()
+        const _videoCount = await _contract.methods.videoCount().call()
         setVideoCount(_videoCount)
 
         //videoList
         for (let i = 1; i <= videoCount; i++) {
-          const _video = await contract.methods.videos(i).call()
+          const _video = await _contract.methods.videos(i).call()
           setVideoList((videoList) => [...videoList, _video])
         }
 
         // Set Latest video with title
-        const _latest = await contract.methods.videos(videoCount).call()
+        const _latest = await _contract.methods.videos(videoCount).call()
         setCurrentTitle(_latest.title)
         setCurrentHash(_latest.hash)
       }
@@ -113,10 +112,7 @@ const App = () => {
   //Change Video
   const changeVideo = (hash, title) => {}
 
-  // console.log(contract && contract.methods.videos(1).call())
   console.log(videoList)
-
-  console.log(uploading)
 
   return (
     <div>
@@ -126,7 +122,11 @@ const App = () => {
           <p>Loading...</p>
         </div>
       ) : (
-        <Main uploadVideo={uploadVideo} />
+        <Main
+          uploadVideo={uploadVideo}
+          currentTitle={currentTitle}
+          hash={currentHash}
+        />
       )}
     </div>
   )

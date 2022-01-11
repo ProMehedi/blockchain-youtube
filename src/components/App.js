@@ -4,6 +4,7 @@ import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3'
 import './App.css'
+import { ScaleLoader } from 'react-spinners'
 
 //Declare IPFS
 const ipfsClient = require('ipfs-http-client')
@@ -122,8 +123,11 @@ const App = () => {
     <div>
       <Navbar account={account} />
       {loading ? (
-        <div id='loader' className='text-center mt-5'>
-          <p>Loading...</p>
+        <div
+          className='d-flex justify-content-center align-items-center'
+          style={{ minHeight: '100vh' }}
+        >
+          <ScaleLoader color='#ce053d' height={40} />
         </div>
       ) : (
         <Main

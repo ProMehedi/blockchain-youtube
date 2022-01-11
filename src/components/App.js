@@ -15,6 +15,7 @@ const ipfs = ipfsClient({
 
 const App = () => {
   const [loading, setLoading] = React.useState(false)
+  const [uploading, setUploading] = React.useState(false)
   const [account, setAccount] = React.useState(
     '0x0000000000000000000000000000000000000000'
   )
@@ -89,7 +90,24 @@ const App = () => {
 
   //Upload video
   const uploadVideo = (title, buffer) => {
-    console.log({ title, buffer })
+    setUploading(true)
+    ipfs.add(buffer, (err, ipfsHash) => {
+      console.log(ipfsHash)
+      if (err) {
+        console.error(err)
+        return
+      }
+      // setCurrentTitle(title)
+      // setCurrentHash(ipfsHash[0].hash)
+      contract.methods
+        .uploadVideo(ipfsHash[0].hash, title)
+        .send({ from: account })
+        .on('receipt', (receipt) => {
+          console.log(receipt)
+          loadBlockchainData()
+          setUploading(false)
+        })
+    })
   }
 
   //Change Video
@@ -97,6 +115,8 @@ const App = () => {
 
   // console.log(contract && contract.methods.videos(1).call())
   console.log(videoList)
+
+  console.log(uploading)
 
   return (
     <div>
